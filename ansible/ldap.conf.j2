@@ -1,0 +1,6 @@
+# ldap.conf.j2
+host {{ ldap_server }}
+base {{ ldap_base_dn }}
+uri ldap://{{ ldap_server }}
+binddn {{ ldap_bind_dn }}
+bindpw {{ ldap_bind_password }}

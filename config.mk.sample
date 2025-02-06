@@ -1,0 +1,10 @@
+GOVC_INSECURE = 1
+GOVC_URL = 172.16.0.27
+GOVC_USERNAME = administrator@vsphere.local
+GOVC_PASSWORD = P@ssw0rds
+GOVC_DATASTORE = Primary_Storage
+GOVC_NETWORK = VM Network
+GOVC_RESOURCE_POOL = */Resources
+CLOUD_INIT_DATA = $(gzip -c9 < user_data.yaml | { base64 -w0 2>/dev/null || base64; })
+METADATA = $(gzip -c9 < metadata.yaml | { base64 -w0 2>/dev/null || base64; })
+HDD_SIZE = 60G

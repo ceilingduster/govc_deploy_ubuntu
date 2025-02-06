@@ -1,0 +1,46 @@
+---
+- name: Configure LDAP on Ubuntu system
+  hosts: ldap_clients
+  become: true
+  become_user: root
+  gather_facts: yes
+
+  tasks:
+    - name: Install necessary LDAP packages
+      ansible.builtin.apt:
+        name:
+          - nslcd
+          - nscd
+          - libnss-ldap
+          - libpam-ldap
+          - ldap-utils
+        state: present
+        update_cache: yes
+
+    - name: Configure LDAP client
+      ansible.builtin.template:
+        src: ldap.conf.j2
+        dest: /etc/ldap/ldap.conf
+
+    - name: Configure NSSwitch
+      ansible.builtin.lineinfile:
+        path: /etc/nsswitch.conf
+        regexp: '^passwd'
+        line: 'passwd:         compat ldap'
+
+    - name: Configure PAM for LDAP
+      ansible.builtin.lineinfile:
+        path: /etc/pam.d/common-auth
+        regexp: '^# pam_unix'
+        line: 'auth required pam_ldap.so'
+
+    - name: Restart NSS and PAM services to apply changes
+      ansible.builtin.systemd:
+        name: nscd
+        state: restarted
+
+    - name: Ensure LDAP client is enabled
+      ansible.builtin.systemd:
+        name: nslcd
+        enabled: true
+        state: started
