@@ -6,16 +6,11 @@
 curl -L -o - "https://github.com/vmware/govmomi/releases/latest/download/govc_$(uname -s)_$(uname -m).tar.gz" | tar xvfz -
 ```
 
-## Setup cloud-init files
-
-```
-cp user_data.yaml.sample user_data.yaml
-cp metadata.yaml.sample metadata.yaml
-```
-
-and edit with your favourite editor.
-
 ## Edit env variables
+
+```sh
+cp config.mk.sample config.mk
+```
 
 Create a `config.mk` file with the following content:
 
@@ -38,13 +33,7 @@ cp ~/.ssh/id_* .
 
 ## Usage
 
-Clone the repository and set up environment variables:
-
-```sh
-git clone https://github.com/ceilingduster/govc_ubuntu_template
-cd govc_ubuntu_template
-cp govcvars.sh.sample govcvars.sh
-```
+Clone the repository and set up ```config.mk```:
 
 Run the following `make` commands as needed:
 
@@ -72,16 +61,6 @@ Run the following `make` commands as needed:
   ```sh
   make
   ```
-- **Clean up downloaded OVA**  
-  ```sh
-  make clean
-  ```
 
 _Sit back, and grab a coffee._ ☕
 ```
-
-### Updates:
-- **Replaced `doit.sh` with `make` commands** for a modular and structured approach.
-- **Added explanations** for each `make` target.
-- **Fixed SSH key copy command** (it now references `~/.ssh` correctly).
-- **Improved readability** with proper spacing and formatting.
